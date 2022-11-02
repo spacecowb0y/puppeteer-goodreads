@@ -12,10 +12,13 @@ export default async function signin(
 ): Promise<SignInReturn> {
   const page = await browser.newPage();
   await page.goto('https://www.goodreads.com/user/sign_in');
-  await page.type('#user_email', username);
-  await page.type('#user_password', password);
+  await page.waitForSelector('.authPortalSignInButton');
+  await page.click('.authPortalSignInButton');
 
-  await page.click('[name="next"]');
+  await page.waitForSelector('#signInSubmit');
+  await page.type('#ap_email', username);
+  await page.type('#ap_password', password);
+  await page.click('#signInSubmit');
 
   const loggedInPromise = page
     .waitForSelector('nav.siteHeader__primaryNavInline')
